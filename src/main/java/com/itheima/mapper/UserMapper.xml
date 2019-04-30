@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mapper.UserMapper">
+
+    <!--findAll-->
+
+    <select id="findAll" resultType="com.itheima.domain.User">
+        select * from user
+    </select>
+
+
+    <!--添加用户-->
+    <insert id="saveUser" parameterType="com.itheima.domain.User">
+        <!--
+            keyColumn:要查询的自增列的列名
+            keyProperty：将返回值赋值给User对象的id属性
+            resultType:返回值的类型
+            order:表示selectKey里面的SQL语句和它外面的SQL语句执行顺序
+                  AFTER：外面SQL语句先执行
+                  BEFORE:selectKey里面的SQL语句先执行
+        -->
+        <selectKey keyColumn="id" keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO user(username,birthday,sex,address)VALUES(#{username},#{birthday},#{sex},#{address})
+    </insert>
+
+    <!--修改用户-->
+    <update id="updateUser" parameterType="com.itheima.domain.User">
+    UPDATE user SET username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} WHERE id=#{id}
+</update>
+
+
+
+    <!--删除用户-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+    DELETE FROM  user WHERE  id=#{id}
+</delete>
+
+
+
+</mapper>
